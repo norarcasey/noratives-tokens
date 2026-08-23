@@ -1,0 +1,27 @@
+{
+  "name": "@noratives/tokens",
+  "version": "1.0.0",
+  "description": "Shared design tokens for the Nora Suite. Tokens only — no components.",
+  "license": "UNLICENSED",
+  "private": false,
+  "type": "module",
+  "files": [
+    "tokens.css",
+    "README.md"
+  ],
+  "exports": {
+    "./tokens.css": "./tokens.css",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "peerDependencies": {
+    "tailwindcss": ">=4"
+  },
+  "peerDependenciesMeta": {
+    "tailwindcss": {
+      "optional": true
+    }
+  }
+}
