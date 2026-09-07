@@ -74,9 +74,12 @@
    * Text, light. Each of these is measured against `--surface` (#faf8f3), not against
    * white — the app sits on the tinted surface, and it is the harder of the two.
    *
-   *   text     ink-950   14.32:1
-   *   muted    ink-700    6.78:1
-   *   subtle   ink-600    4.72:1
+   * Worst case across every surface an app may put text on -- `--surface`,
+   * `--surface-raised`, and any tinted card surface the app defines:
+   *
+   *   text     ink-950   11.60:1
+   *   muted    ink-800    9.19:1
+   *   subtle   ink-700    5.98:1
    *
    * `--text-subtle` used to be `--ink-500`, which measures **3.23:1** and fails WCAG AA
    * for anything that is not large text. It is used for small text — captions, counts,
@@ -88,12 +91,16 @@
    * was wrong was a *text* token pointing at a step too light to be read, so both text
    * tokens move down one and the hierarchy is preserved.
    *
-   * Dark is untouched and must stay that way: the same ink-500 measures 5.35:1 against
-   * ink-950, so moving it in the same direction there would break what already passes.
+   * v1.1.0 moved these one step and measured only against `--surface`, which is the
+   * mistake worth not repeating: an app's *card* surfaces are tinted, and every one of them
+   * is darker than `--surface`. Subtle text on a coloured card measured 4.16-4.35:1 while
+   * the same token measured 4.72:1 on the plain board -- so the fix passed its own test and
+   * left the bug on screen. A text token is only as good as its worst sanctioned
+   * background.
    * ------------------------------------------------------------------------------- */
   --text: var(--ink-950);
-  --text-muted: var(--ink-700);
-  --text-subtle: var(--ink-600);
+  --text-muted: var(--ink-800);
+  --text-subtle: var(--ink-700);
   --text-on-accent: #ffffff;
 
   --border: var(--ink-200);
@@ -119,15 +126,20 @@
     --surface-inset: var(--ink-800);
 
     /*
-      Measured against `--surface` (ink-950): text 16.00:1, muted 8.20:1, subtle 5.35:1.
-      Do not apply light's fix here — ink-500 passes comfortably on near-black, and moving
-      it to ink-600 would drop it to 3.67:1. Known and accepted: subtle on `--surface-raised`
-      is 4.43:1, a shade under AA, and closing that would mean shifting the whole dark text
-      hierarchy a step lighter for 0.07.
+      Dark moves lighter where light moved darker, and for the same reason: measured
+      against the worst sanctioned background rather than against `--surface` alone. Card
+      tints in dark are lighter than the board, and ink-500 on them was 4.16-4.34:1.
+
+        text     ink-100   10.90:1
+        muted    ink-300    9.04:1
+        subtle   ink-400    6.37:1
+
+      This also closes what v1.1.0 recorded as known and accepted: subtle on
+      `--surface-raised` was 4.43:1, and is 6.79:1 now.
     */
     --text: var(--ink-100);
-    --text-muted: var(--ink-400);
-    --text-subtle: var(--ink-500);
+    --text-muted: var(--ink-300);
+    --text-subtle: var(--ink-400);
     --text-on-accent: #ffffff;
 
     --border: var(--ink-800);
@@ -154,8 +166,8 @@
 
   /* Same numbers as the media query above; see the note there. */
   --text: var(--ink-100);
-  --text-muted: var(--ink-400);
-  --text-subtle: var(--ink-500);
+  --text-muted: var(--ink-300);
+  --text-subtle: var(--ink-400);
   --text-on-accent: #ffffff;
 
   --border: var(--ink-800);

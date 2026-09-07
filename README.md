@@ -71,6 +71,27 @@ cleanly if it does not.
 
 Consumers pin a tag. Bump the tag, then `pnpm tokens:update` in the consuming app.
 
+### v1.2.0 — text meets WCAG AA on tinted surfaces too
+
+v1.1.0 measured against `--surface` and stopped there. Apps tint their card surfaces, and
+every tint is darker (light) or lighter (dark) than the board — so subtle text on a
+coloured card was **4.16–4.35:1** in both themes while the same token measured 4.72:1 on
+the plain board. The fix passed its own test and left the bug on screen.
+
+Both themes move one more step, measured against the worst sanctioned background:
+
+| | light | worst | dark | worst |
+| --- | --- | --- | --- | --- |
+| `--text` | ink-950 | 11.60:1 | ink-100 | 10.90:1 |
+| `--text-muted` | ink-800 | 9.19:1 | ink-300 | 9.04:1 |
+| `--text-subtle` | ink-700 | 5.98:1 | ink-400 | 6.37:1 |
+
+**A text token is only as good as its worst sanctioned background.** If an app defines a
+surface, that surface has to clear these — or the token does.
+
+This also closes what v1.1.0 recorded as known and accepted: subtle on `--surface-raised`
+in dark was 4.43:1, and is 6.79:1 now.
+
 ### v1.1.0 — light-mode text meets WCAG AA
 
 `--text-subtle` was `--ink-500`, which measures **3.23:1** against `--surface` and fails AA
