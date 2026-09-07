@@ -70,9 +70,30 @@
   --surface-sunken: var(--ink-100);
   --surface-inset: var(--ink-200);
 
+  /* ---------------------------------------------------------------------------------
+   * Text, light. Each of these is measured against `--surface` (#faf8f3), not against
+   * white — the app sits on the tinted surface, and it is the harder of the two.
+   *
+   *   text     ink-950   14.32:1
+   *   muted    ink-700    6.78:1
+   *   subtle   ink-600    4.72:1
+   *
+   * `--text-subtle` used to be `--ink-500`, which measures **3.23:1** and fails WCAG AA
+   * for anything that is not large text. It is used for small text — captions, counts,
+   * field hints — so 4.5:1 is the bar it has to clear, and it was not close.
+   *
+   * The fix is here rather than in the ramp, deliberately. The ramp is a ramp: ink-500 is
+   * a perfectly good mid-tone for a border or a glyph, and darkening it far enough to
+   * carry small text would have collapsed it into ink-600 and cost the ramp a step. What
+   * was wrong was a *text* token pointing at a step too light to be read, so both text
+   * tokens move down one and the hierarchy is preserved.
+   *
+   * Dark is untouched and must stay that way: the same ink-500 measures 5.35:1 against
+   * ink-950, so moving it in the same direction there would break what already passes.
+   * ------------------------------------------------------------------------------- */
   --text: var(--ink-950);
-  --text-muted: var(--ink-600);
-  --text-subtle: var(--ink-500);
+  --text-muted: var(--ink-700);
+  --text-subtle: var(--ink-600);
   --text-on-accent: #ffffff;
 
   --border: var(--ink-200);
@@ -97,6 +118,13 @@
     --surface-sunken: #100e0b;
     --surface-inset: var(--ink-800);
 
+    /*
+      Measured against `--surface` (ink-950): text 16.00:1, muted 8.20:1, subtle 5.35:1.
+      Do not apply light's fix here — ink-500 passes comfortably on near-black, and moving
+      it to ink-600 would drop it to 3.67:1. Known and accepted: subtle on `--surface-raised`
+      is 4.43:1, a shade under AA, and closing that would mean shifting the whole dark text
+      hierarchy a step lighter for 0.07.
+    */
     --text: var(--ink-100);
     --text-muted: var(--ink-400);
     --text-subtle: var(--ink-500);
@@ -124,6 +152,7 @@
   --surface-sunken: #100e0b;
   --surface-inset: var(--ink-800);
 
+  /* Same numbers as the media query above; see the note there. */
   --text: var(--ink-100);
   --text-muted: var(--ink-400);
   --text-subtle: var(--ink-500);

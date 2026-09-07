@@ -70,3 +70,13 @@ cleanly if it does not.
 ## Versioning
 
 Consumers pin a tag. Bump the tag, then `pnpm tokens:update` in the consuming app.
+
+### v1.1.0 — light-mode text meets WCAG AA
+
+`--text-subtle` was `--ink-500`, which measures **3.23:1** against `--surface` and fails AA
+for anything but large text — and it is used for small text throughout. Both light text
+tokens move down one step: `--text-muted` to `--ink-700` (6.78:1) and `--text-subtle` to
+`--ink-600` (4.72:1). The ramp itself is unchanged, and dark is deliberately untouched:
+`--ink-500` measures 5.35:1 on near-black, so the same move there would break what passes.
+
+Visually this darkens captions, counts and hints in light mode. That is the point.
